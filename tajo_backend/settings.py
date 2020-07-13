@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'account',
     'rest_framework',
     'api',
+    'buzzer',
 ]
 
 MIDDLEWARE = [

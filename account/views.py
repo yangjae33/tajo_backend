@@ -9,7 +9,6 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
 @api_view(['get'])
 def fetch_user(request):
     users = User.objects.all()

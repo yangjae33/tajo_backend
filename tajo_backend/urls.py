@@ -16,12 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from rest_framework import routers
-from account.views import UserView
-from account.views import fetch_user
+
+from account.views import UserView,fetch_user
 from api.views import index, api_view
+from buzzer.views import buzzer_view,BuzzerView
 
 router = routers.DefaultRouter()
 router.register('users',UserView)
+router.register('callbuzzer',BuzzerView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +31,5 @@ urlpatterns = [
     path('fetch_user/',fetch_user),
     path('index/',index),
     path('api_view/',api_view),
+    path('buzzer_view/',buzzer_view),
 ]
