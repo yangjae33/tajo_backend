@@ -7,6 +7,8 @@ from api.views import arr_view, StationView, station_view, station_chk
 from api.views import route_view, RouteView
 from buzzer.views import buzzer_view,BuzzerView
 
+from buzzer import views
+
 router = routers.DefaultRouter()
 router.register('users',UserView)
 router.register('callbuzzer',BuzzerView)
@@ -21,5 +23,8 @@ urlpatterns = [
     path('buzzer_view/',buzzer_view),
     path('station_view/',station_view),
     path('route_view/',route_view),
-    path('station_chk/',station_chk)
+    path('station_chk/',station_chk),
+
+    path('Reservation',views.Reservation.as_view()),
+    path('Alarm',views.Alarm.as_view()),
 ]

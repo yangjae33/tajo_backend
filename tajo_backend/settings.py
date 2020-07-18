@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'buzzer',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +42,7 @@ INSTALLED_APPS = [
     'account',
     'rest_framework',
     'api',
-    'buzzer',
+    
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'tajo_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'buzzer')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tajo_backend.wsgi.application'
-
+ASGI_APPLICATION = 'tajo_backend.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -93,6 +95,15 @@ DATABASES = {
     }
 }
 
+# channel_layers
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND' : 'channels_redis.core.RedisChannelLayer',
+        'CONFIG' : {
+            "hosts" : [('127.0.0.1',6379)],
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
