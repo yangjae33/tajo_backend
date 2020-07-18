@@ -30,7 +30,6 @@ class Alarm(TemplateView):
         
         return context
 
-
 class Reservation(TemplateView):
     template_name = "templates/reservation.html"
 

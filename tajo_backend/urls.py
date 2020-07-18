@@ -3,10 +3,8 @@ from django.urls import path,include
 from rest_framework import routers
 
 from account.views import UserView,fetch_user
-from api.views import arr_view, StationView, station_view, station_chk
-from api.views import route_view, RouteView
+from api.views import *
 from buzzer.views import buzzer_view,BuzzerView
-
 from buzzer import views
 
 router = routers.DefaultRouter()
@@ -19,12 +17,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include(router.urls)),
     path('user_view/',fetch_user),
-    path('arr_view/',arr_view),
+    path('arr_view/info',arrinfo,{'busRouteID': None}),
+    path('arr_view/<busRouteId>/',arrdetail),
+
     path('buzzer_view/',buzzer_view),
     path('station_view/',station_view),
     path('route_view/',route_view),
     path('station_chk/',station_chk),
 
-    path('Reservation',views.Reservation.as_view()),
-    path('Alarm',views.Alarm.as_view()),
+    path('reservation',views.Reservation.as_view()),
+    path('alarm',views.Alarm.as_view()),
 ]

@@ -90,7 +90,7 @@ DATABASES = {
         'NAME':'tajo',
         'USER':'root',
         'PASSWORD':'321',
-        'HOST':'db',
+        'HOST':'localhost',
         'PORT':'',
     }
 }
