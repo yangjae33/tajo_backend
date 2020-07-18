@@ -15,3 +15,5 @@ def buzzer_view(request):
     serializer = BuzzerSerializer(buzzers,context = {'request':request},many=True)
 
     return Response(serializer.data)
+
+

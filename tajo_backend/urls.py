@@ -3,7 +3,7 @@ from django.urls import path,include
 from rest_framework import routers
 
 from account.views import UserView,fetch_user
-from api.views import arr_view, StationView, station_view
+from api.views import arr_view, StationView, station_view, station_chk
 from api.views import route_view, RouteView
 from buzzer.views import buzzer_view,BuzzerView
 
@@ -20,5 +20,6 @@ urlpatterns = [
     path('arr_view/',arr_view),
     path('buzzer_view/',buzzer_view),
     path('station_view/',station_view),
-    path('route_view/',route_view)
+    path('route_view/',route_view),
+    path('station_chk/',station_chk)
 ]

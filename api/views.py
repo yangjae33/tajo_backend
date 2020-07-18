@@ -56,7 +56,22 @@ def arr_view(request):
     #return HttpResponse(newHtml)
 
     return JsonResponse(json_data, safe=False)
+
+def station_chk(request):
+    key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
+    busRouteId = '100100112'
+    queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
+    #노선별 경유 정류소 조회 서비스
+    url = 'http://ws.bus.go.kr/api/rest/busRouteInfo/getStaionByRoute?'+queryParams
+    req = requests.get(url)
+    html = req.text
+    # soup = BeautifulSoup(html, 'html.parser')
     
+    # stId = soup.select('stId')
+    # stNm = soup.select('stNm')
+    # arsId = soup.select('arsId')
+    # rtNm = soup.select('rtNm')
+    return HttpResponse(html)
 
 from .serializers import StationSerializer,RouteSerializer
 from rest_framework import viewsets
