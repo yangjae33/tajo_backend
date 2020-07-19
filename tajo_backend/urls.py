@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework import routers
 
-from account.views import UserView,fetch_user
+from account.views import *
 from api.views import *
 from buzzer.views import *
 
@@ -15,7 +15,8 @@ router.register('route',RouteView)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include(router.urls)),
-    path('user_view/',fetch_user),
+    path('accounts/',include('account.urls')),
+
     path('arr_view/info',arrinfo,{'busRouteID': None}),
     path('arr_view/<busRouteId>/',arrdetail),
 
