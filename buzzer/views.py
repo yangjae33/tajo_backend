@@ -30,14 +30,12 @@ class Alarm(TemplateView):
         
         return context
 
-
 class Reservation(TemplateView):
     template_name = "templates/reservation.html"
 
     def get_context_data(self, **kwargs):
         context = super(TemplateView, self).get_context_data()
         context['username'] = self.request.user.username
-        
         return context
 
     def post(self, request, **kwargs):
@@ -46,5 +44,4 @@ class Reservation(TemplateView):
         data=json.loads(data_unicode)
         ins.message = data['message']
         ins.save()
-
         return HttpResponse('')

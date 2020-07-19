@@ -4,9 +4,15 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-def arr_view(request):
+def arrinfo(request,busRouteID):
+    if busRouteID:
+        return HttpResponse('info : {}'.format(busRouteID))
+    else:
+        return HttpResponse('No busRouteId')
+
+def arrdetail(request,busRouteId):
     key = 'I6tIvypzejp0BAk97%2Be7MMlQ8GxV7FBkI15CUSMc3WM0jQ834dsIKxgh5gCmaPWhGpXKuqYgbpd0ftq4f24RyQ%3D%3D'
-    busRouteId = '100100118'
+    #busRouteId = '100100118'
     stId = '112000001'
     #queryParams = 'ServiceKey='+key+'&stId='+stId+'&busRouteId='+busRouteId+'&ord=18'
     queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
