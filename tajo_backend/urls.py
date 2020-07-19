@@ -4,8 +4,7 @@ from rest_framework import routers
 
 from account.views import UserView,fetch_user
 from api.views import *
-from buzzer.views import buzzer_view,BuzzerView
-from buzzer import views
+from buzzer.views import *
 
 router = routers.DefaultRouter()
 router.register('users',UserView)
@@ -25,6 +24,6 @@ urlpatterns = [
     path('route_view/',route_view),
     path('station_chk/',station_chk),
 
-    path('reservation',views.Reservation.as_view()),
-    path('alarm',views.Alarm.as_view()),
+    path('reservation/',Reservation.as_view()),
+    path('alarm/',Alarm.as_view()),
 ]

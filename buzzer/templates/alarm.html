@@ -8,7 +8,7 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
 </body>
 <script>
-    username='{{root}}';
+    username='{{username}}';
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/test/'+username+'/');
