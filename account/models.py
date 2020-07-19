@@ -13,6 +13,9 @@ class User(models.Model):
     def __str__(self):
         return self.user_idx
 
+    class Meta:
+        db_table = "user"
+
 class Bus(models.Model):
     #버스 고유값
     bus_idx = models.CharField(max_length=50)
