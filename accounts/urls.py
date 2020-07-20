@@ -3,13 +3,13 @@ from .views import UserSignIn, UserSignUp, fetch_user
 
 urlpatterns = [
     # /user/signup/
-    path('user/signup/',UserSignUp.as_view()),
+    #path('user/signup',UserSignUp.as_view()),
 
     # /user/signin/
-    path('user/signin/',UserSignIn.as_view()),
+    #path('user/signin',UserSignIn.as_view()),
 
     # /user/list/
-    path('user/list/',fetch_user),
+    #path('user/list',fetch_user),
 
     # /bus/signup/
     #path('bus/signup/')
