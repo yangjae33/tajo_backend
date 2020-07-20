@@ -17,11 +17,13 @@
         console.log(e);
         var data = JSON.parse(e.data);
         var message = data['message'];
-        document.querySelector('#chat-log').value += (message + '\n');
+        if(message != username){
+            document.querySelector('#chat-log').value += (message + '\n');
+        }
     };
 
     chatSocket.onopen=function (e) {
-      console.log("연결 성공");
+        console.log("연결 성공");
     };
 
     chatSocket.onclose = function(e) {
