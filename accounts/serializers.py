@@ -1,4 +1,4 @@
-"""
+
 from .models import User,Bus
 
 from rest_framework import serializers
@@ -12,4 +12,3 @@ class BusSerializer(serializers.HyperlinkedModelSerializer):
     class Meth:
         model = Bus
         fields = '__all__'
-"""

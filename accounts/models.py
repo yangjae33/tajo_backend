@@ -1,6 +1,40 @@
 # coding: utf-8
 
 from django.db import models
+
+class User(models.Model):
+    #유저 고유값
+    user_idx = models.CharField(max_length=50)
+    #로그인 시 유저 ID
+    user_id = models.CharField(max_length=50)
+    #로그인 시 유저 PW
+    user_password = models.CharField(max_length=255)
+    #유저 이름
+    user_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.user_idx
+
+    class Meta:
+        db_table = "user"
+
+class Bus(models.Model):
+    
+    #로그인 시 버스 ID : 번호판
+    bus_id = models.CharField(max_length=50)
+    #운행중인 노선 번호
+    route_nm = models.CharField(max_length=20)
+    #jwt
+    bus_token = models.CharField(max_length=254)
+    def __str__(self):
+        return self.bus_id
+
+    class Meta:
+        db_table = "bus"
+
+
+"""
+from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
@@ -11,7 +45,8 @@ class UserManager(BaseUserManager):
         now = timezone.now()
         email = self.normalize_email(email)
         user = self.model(
-            id = id,
+            #email = email,
+            email = email,
             is_staff = is_staff,
             is_superuser = is_superuser,
             last_login = now,
@@ -31,7 +66,7 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length = 254,unique=True)
+    email = models.CharField(max_length = 254,unique=True)
     name = models.CharField(max_length=254,null=True,blank=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -42,40 +77,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
-    
+
     objects = UserManager()
 
     def get_absolute_url(self):
         return f"/users/{self.pk}"
 
-"""
-class User(models.Model):
-    #유저 고유값
-    user_idx = models.CharField(max_length=50)
-    #로그인 시 유저 ID
-    user_id = models.CharField(max_length=50)
-    #로그인 시 유저 PW
-    user_password = models.CharField(max_length=255)
-    #유저 이름
-    user_name = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.user_idx
-
-    class Meta:
-        db_table = "user"
-
-class Bus(models.Model):
-    #버스 고유값
-    bus_idx = models.CharField(max_length=50)
-    #로그인 시 버스 ID
-    bus_id = models.CharField(max_length=50)
-    #운행중인 노선 번호
-    route_nm = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.bus_id
-
-    class Meta:
-        db_table = "bus"
 """

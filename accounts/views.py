@@ -1,10 +1,9 @@
-"""
 import json
 import jwt
 import bcrypt
 
-#from .serializers import UserSerializer
-from .models import User
+from .serializers import UserSerializer
+from .models import User,Bus
 from tajo_backend.settings import SECRET_KEY
 
 from django.shortcuts import render
@@ -69,4 +68,37 @@ class UserSignIn(View):
         except KeyError:
             return JsonResponse({'message' : 'key error'},status = 400)
 
-            """
+class BusSignUp(View):
+    def post(self,request):
+        data = json.loads(request.body)
+        try:
+            if Bus.objects.filter(bus_id = data['bus_id']).exists():
+                return JsonResponse({'message' : 'existed id'}, status=400)
+
+            Bus(
+                bus_id = data['bus_id'],
+                bus_token = bcrypt.hashpw(data['bus_id'].encode('utf-8'),bcrypt.gensalt()).decode("utf-8"),
+                route_nm = data['route_nm']
+            ).save()
+
+            return JsonResponse({'message' : 'sign up completed'}, status=200)
+
+        except KeyError:
+            return JsonResponse({'message' : 'key error'})
+
+class BusSignIn(View):
+    def post(self,request):
+        data = json.loads(request.body)
+
+        try:
+            if Bus.objects.filter(bus_id = data['bus_id']).exists():
+                bus = Bus.objects.get(bus_id = data['bus_id'])
+                token = jwt.encode({'bus' : bus.bus_id},SECRET_KEY,algorithm='HS256').decode("utf-8")
+                return JsonResponse({'message':f'Hi, {bus.route_nm}!','token':token}, status = 200)
+                
+            # invalid ID
+            return JsonResponse({'message':'invalid bus ID'},status=400)
+
+        except KeyError:
+            return JsonResponse({'message' : 'key error'},status = 400)
+
