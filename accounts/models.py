@@ -3,8 +3,6 @@
 from django.db import models
 
 class User(models.Model):
-    #유저 고유값
-    user_idx = models.CharField(max_length=50)
     #로그인 시 유저 ID
     user_id = models.CharField(max_length=50)
     #로그인 시 유저 PW
@@ -13,7 +11,7 @@ class User(models.Model):
     user_name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.user_idx
+        return self.user_name
 
     class Meta:
         db_table = "user"
