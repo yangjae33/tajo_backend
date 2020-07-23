@@ -5,7 +5,13 @@ from .models import Route
 class StationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = BusStation
-        fields = '__all__'
+        fields = [
+            'stn_id',
+            'ars_id',
+            'stn_name',
+            'pos_x',
+            'pos_y'
+        ]
         
 class RouteSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
