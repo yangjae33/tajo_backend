@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,Http404
 import json
 import requests
 from bs4 import BeautifulSoup
@@ -63,22 +63,6 @@ def arrdetail(request,busRouteId):
 
     return JsonResponse(json_data, safe=False)
 
-def station_chk(request):
-    key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
-    busRouteId = '100100112'
-    queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
-    #노선별 경유 정류소 조회 서비스
-    url = 'http://ws.bus.go.kr/api/rest/busRouteInfo/getStaionByRoute?'+queryParams
-    req = requests.get(url)
-    html = req.text
-    # soup = BeautifulSoup(html, 'html.parser')
-    
-    # stId = soup.select('stId')
-    # stNm = soup.select('stNm')
-    # arsId = soup.select('arsId')
-    # rtNm = soup.select('rtNm')
-    return HttpResponse(html)
-
 from .serializers import StationSerializer,RouteSerializer
 from rest_framework import viewsets
 from .models import BusStation , Route
@@ -105,3 +89,42 @@ def route_view(request):
     serializer = RouteSerializer(routes,context = {'request':request},many=True)
     return Response(serializer.data)
 
+from rest_framework import viewsets
+from rest_framework.views import APIView
+
+class CheckStationView(APIView):
+    def map_stn_name_id(self,name):
+        try:
+            return BusStation.objects.filter(stn_name=name)[:1].get()
+        except BusStation.DoesNotExist:
+            raise Http404
+
+    def map_route_nm_id(self,name):
+        try:
+            return Route.objects.filter(route_nm=name)[:1].get()
+        except Route.DoesNotExist:
+            raise Http404
+        
+    def get(self,request,rnm):
+        #request : route_nm, stn_name->stn_id
+        data = json.loads(request.body)
+        
+        busRouteId = self.map_route_nm_id(rnm).route_id
+        target_stn = self.map_stn_name_id(data['stn_name']).stn_id
+        
+        key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
+        queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
+        #노선별 경유 정류소 조회 서비스
+
+        url = 'http://ws.bus.go.kr/api/rest/busRouteInfo/getStaionByRoute?'+queryParams
+        req = requests.get(url)
+        html = req.text
+        
+        soup = BeautifulSoup(html, 'html.parser')
+        stn = soup.select('station')
+        
+        for i in range (len(stn)):
+            if stn[i].text == target_stn:
+                return Response({"stn_id":target_stn},status=200)
+            
+        return Response({"message":"no matching station"},status=400)

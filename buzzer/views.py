@@ -1,13 +1,34 @@
+from django.http import Http404
 from django.shortcuts import render
+from django.contrib.contenttypes.models import ContentType
+
 from .serializers import BuzzerSerializer
-from rest_framework import viewsets
 from .models import CallBuzzer
+
+from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-class BuzzerView(viewsets.ModelViewSet):
-    queryset = CallBuzzer.objects.all()
-    serializer_class = BuzzerSerializer
+class BuzzerView(APIView):
+    def get_object(self,stn,bus):
+        try:
+            return CallBuzzer.objects.filter(stn_id=stn).filter(bus_id=bus)
+        except CallBuzzer.DoesNotExist:
+            raise Http404
+
+    def post(self,request):
+        serializer = BuzzerSerializer(data=request.data)
+        if(serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data,status=200)
+        return Response(serializer.errors,status=400)
+    
+    def delete(self,request,stn,bus,format=None):
+        tp = (stn,bus)
+        buzzer = self.get_object(stn,bus)
+        buzzer.delete()
+        return Response(status=204)
 
 @api_view(['get'])
 def buzzer_view(request):
