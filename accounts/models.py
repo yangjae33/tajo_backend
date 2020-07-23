@@ -3,10 +3,6 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
 class User(models.Model):
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     #로그인 시 유저 ID
     user_id = models.CharField(max_length=50,primary_key=True)
     #로그인 시 유저 PW
