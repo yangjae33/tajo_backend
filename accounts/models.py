@@ -3,7 +3,10 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
 class User(models.Model):
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     #로그인 시 유저 ID
     user_id = models.CharField(max_length=50,primary_key=True)
     #로그인 시 유저 PW
@@ -13,7 +16,7 @@ class User(models.Model):
 
     #buzzer_list = GenericRelation('buzzer.CallBuzzer')
     def __str__(self):
-        return self.user_idx
+        return self.user_name
 
     class Meta:
         db_table = "user"
