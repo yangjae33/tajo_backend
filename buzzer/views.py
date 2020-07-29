@@ -17,6 +17,7 @@ class BuzzerView(APIView):
         except CallBuzzer.DoesNotExist:
             raise Http404
 
+    # 하차벨 예약 등록
     def post(self,request):
         serializer = BuzzerSerializer(data=request.data)
         if(serializer.is_valid()):
@@ -24,6 +25,7 @@ class BuzzerView(APIView):
             return Response(serializer.data,status=200)
         return Response(serializer.errors,status=400)
     
+    # 하차벨 누르기 & 삭제
     def delete(self,request,stn,bus,format=None):
         tp = (stn,bus)
         buzzer = self.get_object(stn,bus)
