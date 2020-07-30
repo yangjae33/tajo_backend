@@ -26,11 +26,14 @@ class BuzzerView(APIView):
         return Response(serializer.errors,status=400)
     
     # 하차벨 누르기 & 삭제
-    def delete(self,request,stn,bus,format=None):
-        tp = (stn,bus)
+    def delete(self,request,*args,**kwargs):
+        stn = self.kwargs['stn_id']
+        bus = self.kwargs['bus_id']
         buzzer = self.get_object(stn,bus)
         buzzer.delete()
         return Response(status=204)
+
+
 
 @api_view(['get'])
 def buzzer_view(request):
