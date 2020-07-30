@@ -24,9 +24,6 @@ urlpatterns = [
     path('station_view/',station_view),
     path('route_view/',route_view),
 
-    path('reservation/',Reservation.as_view()),
-    path('alarm/',Alarm.as_view()),
-
-    path('route/',include('api.urls')),
+    path('api/',include('api.urls')),
     path('buzzer/',include('buzzer.urls')),
 ]

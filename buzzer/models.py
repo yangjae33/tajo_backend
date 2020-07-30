@@ -25,4 +25,3 @@ class CallBuzzer(models.Model):
  
     class Meta:
         db_table = "Buzzer"
-        unique_together = (("stn_id","bus_id"),)
