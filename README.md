@@ -42,6 +42,10 @@ docker-compose up --build
 
 <img src="./img/docs/docker-browser-conn.png" width="640px" height="480px">
 
+## API 목록
+
+* [Wiki](https://github.com/yangjae33/tajo_backend/wiki)
+
 ## DB
 
 * Naver Cloud Database - Postgresql
