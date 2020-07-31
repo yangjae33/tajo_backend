@@ -45,7 +45,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
+    #'channels',
     'buzzer',
     'accounts',
     'api',
@@ -111,7 +111,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tajo_backend.wsgi.application'
-ASGI_APPLICATION = 'tajo_backend.routing.application'
+#ASGI_APPLICATION = 'tajo_backend.routing.application'
+ASGI_APPLICATION = 'tajo_backend.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -122,16 +123,27 @@ DATABASES = {
     #     #'NAME':'memory'
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
+
+    # 'default':{
+    #     'ENGINE':'django.db.backends.postgresql',
+    #     'NAME':'tajo',
+    #     'USER':'root',
+    #     'PASSWORD':'321',
+    #     'HOST':'localhost',
+    #     'PORT':'',
+    # }
+    
+    # Naver cloud DB
     'default':{
         'ENGINE':'django.db.backends.postgresql',
         'NAME':'tajo',
         'USER':'root',
         'PASSWORD':'321',
-        'HOST':'localhost',
-        'PORT':'',
+        'HOST':'27.96.134.245',
+        'PORT':'5432',
     }
 }
-
+"""
 # channel_layers
 CHANNEL_LAYERS = {
     'default':{
@@ -141,7 +153,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
+"""
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

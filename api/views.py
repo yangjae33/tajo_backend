@@ -171,7 +171,7 @@ class CheckStationView(APIView):
             json_data['stn_name'] = stnNm[i].text
             list_data.append(json_data)
 
-        print(list_data)    
+        #print(list_data)    
         json_data = json.dumps(list_data)
         return_json_data = json.loads(json_data)
         return Response(return_json_data,status=200)

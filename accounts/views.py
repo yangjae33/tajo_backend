@@ -55,8 +55,8 @@ class UserSignIn(View):
             if User.objects.filter(user_id = data['user_id']).exists():
                 user = User.objects.get(user_id = data['user_id'])
                 if bcrypt.checkpw(data['user_password'].encode('utf-8'), user.user_password.encode('utf-8')):
-                    token = jwt.encode({'user' : user.user_idx},SECRET_KEY,algorithm='HS256').decode("utf-8")
-                    return JsonResponse({'user_id':user_id,'token': token}, status = 200)
+                    token = jwt.encode({'user' : data['user_id']},SECRET_KEY,algorithm='HS256').decode("utf-8")
+                    return JsonResponse({'user_id':user.user_id,'token': token}, status = 200)
                 else:
                     #wrong PW
                     return JsonResponse({'message':'wrong passowrd'}, status=401)
@@ -83,7 +83,7 @@ class BusSignUp(View):
             return JsonResponse({'message' : 'sign up completed'}, status=200)
 
         except KeyError:
-            return JsonResponse({'message' : 'key error'})
+            return JsonResponse({'message' : 'key error'},status=400)
 
 class BusSignIn(View):
     def post(self,request):
@@ -92,7 +92,7 @@ class BusSignIn(View):
         try:
             if Bus.objects.filter(bus_id = data['bus_id']).exists():
                 bus = Bus.objects.get(bus_id = data['bus_id'])
-                token = jwt.encode({'bus' : bus.bus_id},SECRET_KEY,algorithm='HS256').decode("utf-8")
+                token = jwt.encode({'bus' : data['bus_id']},SECRET_KEY,algorithm='HS256').decode("utf-8")
                 return JsonResponse({'route_nm':bus.route_nm,'token':token}, status = 200)
                 
             # invalid ID
