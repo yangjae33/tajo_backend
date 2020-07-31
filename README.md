@@ -20,23 +20,23 @@
 
 ## 설치 및 사용법
 
-**Clone Repository**
+**1. Clone Repository**
 
 ```
 git clone https://github.com/yangjae33/tajo_backend.git
 ```
 
-**docker-compose 설치**
+**2. docker-compose 설치**
 
 [Docker&Docker-compose 설치 참고](https://docs.docker.com/compose/install/)
 
-**설치 완료 후 명령어 입력**
+**3. 설치 완료 후 명령어 입력**
 
 ```
 docker-compose up --build
 ```
 
-**브라우저 주소창에 localhost:1337 입력으로 접속 확인**
+**4. 브라우저 주소창에 localhost:1337 입력으로 접속 확인**
 
 <img src="./img/docs/docker-browser-conn.png" width="640px" height="480px">
 
