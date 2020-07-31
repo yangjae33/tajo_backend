@@ -7,10 +7,19 @@
 
 # 프로젝트 정보 
 
-## 실행 환경
+## 구성 요소
+
+* Django 3.0.8
+* nginx 1.19.0
+* gunicorn 20.0.4
 
 ## 설치
 
+```git clone https://github.com/yangjae33/tajo_backend.git```
+
 ## 사용법
+
+**docker-compose 설치**
+
 
 ## 
