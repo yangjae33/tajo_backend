@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  nginx:
+    build: ./nginx
+    #image: nginx:latest
+    ports:
+      - 1337:80
+    volumes:
+      - ./:/app
+      - ./nginx:/etc/nginx.conf.d
+    depends_on:
+      - web
   db:
     image: postgres
     volumes:
@@ -11,7 +21,7 @@ services:
       - POSTGRES_PASSWORD=321
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8
 
-  tajo_test_v2:
+  web:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -25,7 +35,11 @@ services:
       - DJANGO_SECRET_KEY=dev_secret_key
     ports:
       - "8000:8000"
-    command: 
-         ./start.sh
+    command: gunicorn tajo_backend.wsgi:application --bind 0.0.0.0:8000
+#python manage.py runserver 0.0.0.0:8000
+#         ./start.sh
+
     volumes:
       - ./:/app/
+    expose:
+      - "8000"
