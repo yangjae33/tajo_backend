@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import BusStation
 from .models import Route
 
-class StationSerializer(serializers.HyperlinkedModelSerializer):
+class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusStation
         fields = [

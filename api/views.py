@@ -1,88 +1,20 @@
-from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse,Http404
 import json
 import requests
 from bs4 import BeautifulSoup
 
-def arrinfo(request,busRouteID):
-    if busRouteID:
-        return HttpResponse('info : {}'.format(busRouteID))
-    else:
-        return HttpResponse('No busRouteId')
-
-def arrdetail(request,busRouteId):
-    key = 'I6tIvypzejp0BAk97%2Be7MMlQ8GxV7FBkI15CUSMc3WM0jQ834dsIKxgh5gCmaPWhGpXKuqYgbpd0ftq4f24RyQ%3D%3D'
-    #busRouteId = '100100118'
-    stn_id = '112000001'
-    #queryParams = 'ServiceKey='+key+'&stId='+stn_id+'&busRouteId='+busRouteId+'&ord=18'
-    queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
-    #경유노선 전체 정류소별 도착 예정 정보목록 조회url
-    url = 'http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll?'+queryParams
-    #url = 'http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRoute?'+queryParams
-    req = requests.get(url)
-    html = req.text
-    #print(html)
-    soup = BeautifulSoup(html, 'html.parser')
-    
-    stId = soup.select('stId')
-    stNm = soup.select('stNm')
-    arsId = soup.select('arsId')
-    rtNm = soup.select('rtNm')
-
-    #첫번째 도착예정 차량 번호판 정보
-    plainNo1 = soup.select('plainNo1')
-    #첫번째 도착예정 버스 도착정보메세지
-    arrmsg1 = soup.select('arrmsg1')
-    
-    lst = []
-    
-    for i in range (len(stId)):
-        temp = {}
-        temp['stId'] = stId[i].text
-        temp['stNm'] = stNm[i].text
-        temp['arsId'] = arsId[i].text
-        temp['rtNm'] = rtNm[i].text
-        temp['plainno1'] = plainNo1[i].text
-        temp['arrmsg1'] = arrmsg1[i].text
-        lst.append(temp)
-        
-    json_str = json.dumps(lst)
-    json_data = json.loads(json_str)
-    
-    #print(json_data)
-    # newHtml = ""
-    # for i in lst:
-    #     temp = "<p>"
-    #     temp = temp+(("정류장ID : "+i['stId']+"<br>")
-    #     +("정류장이름 : "+i['stNm']+"<br>")
-    #     +("ARS-ID : "+i['arsId']+"<br>")
-    #     +("노선번호 : "+i['rtNm']+"<br>")
-    #     +("첫번째 차량번호 : "+i['plainno1']+"<br>")
-    #     +("도착 메세지 : "+i['arrmsg1']+"<br>")+("</p>"))
-    #     newHtml=newHtml+temp
-    #return HttpResponse(newHtml)
-
-    return JsonResponse(json_data, safe=False)
-
-from .serializers import StationSerializer,RouteSerializer
-from rest_framework import viewsets
-from .models import BusStation , Route
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-
-class RouteView(viewsets.ModelViewSet):
-    queryset = Route.objects.all()
-    serializer_class = RouteSerializer
-
-@api_view(['get'])
-def route_view(request):
-    routes = Route.objects.all()
-    serializer = RouteSerializer(routes,context = {'request':request},many=True)
-    return Response(serializer.data)
+from django.shortcuts import render
+from django.http import HttpResponse,JsonResponse,Http404
 
 from rest_framework import viewsets
 from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from accounts.models import Bus,User
+from .models import Route,BusStation
+from .serializers import StationSerializer
+
+AVG_DIST = 17208.19840976472
+MIN_DIST_DIFF = 1.839398464653641e-07
 
 class StationView(APIView):
     def get(self,request):
@@ -105,13 +37,6 @@ class StationView(APIView):
             
         except DoesNotExist:
             return Response(status=400) 
-
-@api_view(['get'])
-def station_view(request):
-    stations = BusStation.objects.all()
-    serializer = StationSerializer(stations,context = {'request':request},many=True)
-    return Response(serializer.data)
-
 
 class CheckStationView(APIView):
     def map_stn_name_id(self,name):
@@ -142,7 +67,7 @@ class CheckStationView(APIView):
         
         soup = BeautifulSoup(html, 'html.parser')
         stn = soup.select('station')
-        
+        print(stn)
         for i in range (len(stn)):
             if stn[i].text == target_stn:
                 return Response({"stn_id":target_stn},status=200)
@@ -175,3 +100,104 @@ class CheckStationView(APIView):
         json_data = json.dumps(list_data)
         return_json_data = json.loads(json_data)
         return Response(return_json_data,status=200)
+
+class BusGPSView(APIView):
+
+    def get(self,request):
+        data = json.loads(request.body)
+        busId = data['bus_id']
+        print(busId)
+
+        try:
+            route_nm = Bus.objects.filter(bus_id=busId).get().route_nm
+        except Bus.DoesNotExist:
+            raise Http404
+        try:
+            busRouteId = Route.objects.filter(route_nm=route_nm).get().route_id
+        except Route.DoesNotExist:
+            raise Http404
+
+        key = "JcLNvbnr4xySd0gGijnicJWNGLZh5J69PV8BtQFAgS3OAgP5XuEikX7ekUkO6e%2FPF3HjqlbPsxiPn88IJMyopw%3D%3D"
+        queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
+
+        url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRtid?"+queryParams
+
+        req = requests.get(url)
+        html = req.text
+
+        soup = BeautifulSoup(html, 'html.parser')
+        bus_ids = soup.select('plainNo')
+        pos_xs = soup.select('gpsX')
+        pos_ys = soup.select('gpsY')
+        list_data = list()
+        pos_x = ""
+        pos_y = ""
+        for i in range(len(bus_ids)):
+            if bus_ids[i].text == busId:
+                pos_x = pos_xs[i].text
+                pos_y = pos_ys[i].text
+
+        if pos_x is not None:
+            json_data = dict()
+            json_data['bus_id']=busId
+            json_data['pos_x'] = pos_x
+            json_data['pos_y'] = pos_y
+            json_data = json.dumps(json_data)
+            return_json_data = json.loads(json_data)
+            return Response(return_json_data,content_type=u"application/json; charset=utf-8",status=200)
+            
+        else:
+            return Response({"message":"no matching bus_id"},status=400)
+
+class StationGPSView(APIView):
+    def sortbyDist(self,pos_x,pos_y):
+        RETURN_CNT = 6
+        user_x = float(pos_x)
+        user_y = float(pos_y)
+        mylist = list()
+        try:
+            stns = BusStation.objects.all()
+        except BusStation.DoesNotExist:
+            return mylist
+        serializer = StationSerializer(stns,many=True)
+        json_data = json.dumps(serializer.data)
+        return_json_data = json.loads(json_data)
+        
+
+        for i in return_json_data:
+            temp = dict()
+            temp['stn_id'] = i['stn_id']
+            temp['stn_name'] = i['stn_name']
+            temp['pos_x'] = float(i['pos_x'])
+            temp['pos_y'] = float(i['pos_y'])
+            temp['dist'] = (float(i['pos_x'])-user_x)**2 + (float(i['pos_y'])-user_y)**2
+            mylist.append(temp)
+        res = sorted(mylist, key = lambda temp: (temp['dist']))
+        
+        return res[:RETURN_CNT]
+
+    def get(self,request):
+        data = json.loads(request.body)
+        stn_id = data['stn_id']
+        try:
+            stns = BusStation.objects.get(stn_id=stn_id)
+            serializer = StationSerializer(stns)  
+            print(serializer)
+            return Response(serializer.data,content_type=u"application/json; charset=utf-8",status=200)
+
+        except BusStation.DoesNotExist:
+            raise Http404
+
+        return Response({"message":"no matching stn_id"},status=400)
+
+    # 사용자의 위치에서 가까운 순으로 버스 정류장 정보 반환
+    def post(self,request):
+        data = json.loads(request.body)
+        user_x = data['pos_x']
+        user_y = data['pos_y']
+        mylist = self.sortbyDist(user_x,user_y)
+        if len(mylist) == 0:
+            return Response({"message":"Bad Request"},status=400)
+        json_data = json.dumps(mylist)
+        return_json_data = json.loads(json_data)
+        return Response(return_json_data, status=200)

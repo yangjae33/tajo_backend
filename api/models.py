@@ -12,8 +12,8 @@ class BusStation(models.Model):
     #위도
     pos_y = models.DecimalField(max_digits=20,decimal_places=15)
 
-    def __str__(self):
-        return self.ars_id
+    # def __str__(self):
+    #     return self.ars_id
 
 class Route(models.Model):
     #노선번호 ( 버스에 써있는 번호 ) 
@@ -21,5 +21,5 @@ class Route(models.Model):
     #노선ID ( 노선 고유한 값 9자리 정수 )
     route_id = models.CharField(max_length=20)
 
-    def __str__(self):
-        return self.route_nm
+    # def __str__(self):
+    #     return self.route_nm

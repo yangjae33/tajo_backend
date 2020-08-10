@@ -71,21 +71,11 @@ class BuzzerView(APIView):
 
         serializer = BuzzerSerializer(data=serializer_dict)
         if(serializer.is_valid()):
-            print("saved successfully")
             serializer.save()
         else:
             print(serializer.errors)
-        json_str = json.dumps(temp)
-        json_data = json.loads(json_str)
-
-        return Response(json_data,status=200)
-        """
-        serializer = BuzzerSerializer(data=request.data)
-        if(serializer.is_valid()):
-            serializer.save()
-            return Response(serializer.data,status=200)
-        return Response(serializer.errors,status=400)
-        """
+        return Response(serializer.data,status=200)
+        
     # 하차벨 누르기 & 삭제
     def delete(self,request,*args,**kwargs):
         stn = self.kwargs['stn_id']
@@ -101,7 +91,7 @@ class BuzzerView(APIView):
         
         serializer = BuzzerSerializer(callbuzzer,many=True)
         
-        return Response(serializer.data,status=200)
+        return Response(serializer.data,content_type=u"application/json; charset=utf-8",status=200)
 
 @api_view(['get'])
 def buzzer_view(request):

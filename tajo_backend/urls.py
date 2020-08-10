@@ -14,16 +14,11 @@ urlpatterns = [
     
     path('',include(router.urls)),
     path('api/auth',obtain_jwt_token),
-
-    path('accounts/',include('accounts.urls')),
-
-    path('arr_view/info',arrinfo,{'busRouteID': None}),
-    path('arr_view/<busRouteId>/',arrdetail),
-
+    
     path('buzzer_view/',buzzer_view),
-    path('station_view/',station_view),
-    path('route_view/',route_view),
-
+    
+    path('accounts/',include('accounts.urls')),
     path('api/',include('api.urls')),
     path('buzzer/',include('buzzer.urls')),
+
 ]
