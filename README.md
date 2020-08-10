@@ -1,5 +1,5 @@
 
-###### 최종 수정일 : 2020-07-31
+###### 최종 수정일 : 2020-08-10
 
 ## 프로젝트 소개
 
@@ -46,9 +46,15 @@ docker-compose up --build
 
 ## DB
 
-* Naver Cloud Database - Postgresql
+* NCloud
 
-## Authors
+## Author
 
 * [양재혁](https://github.com/yangjae33)
 
+## TEAM 함께타조
+
+* [김윤상](https://github.com/yyoonsahng)
+* [양재혁](https://github.com/yangjae33)
+* [전효진](https://github.com/gywlssww)
+* [최승연](https://github.com/seungyeonchoi)
