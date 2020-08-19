@@ -21,7 +21,8 @@ class StationView(APIView):
         data = json.loads(request.body)
         try:
             busRouteId=Route.objects.filter(route_nm=data['route_nm']).route_id
-            key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
+            key = '%2FcZci34ZZmRn%2B%2BFnVmpxlg3gJTLopLKjlrYQ2oQOnbD5l9LzVmgm3b6jINJgSsd%2BJjMap5XMOxgSV8x7OPtjFQ%3D%3D'
+#            key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
             queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
             #노선별 경유 정류소 조회 서비스
 
@@ -56,8 +57,8 @@ class CheckStationView(APIView):
         data = json.loads(request.body)
         busRouteId = self.map_route_nm_id(data['route_nm']).route_id
         target_stn = self.map_stn_name_id(data['stn_name']).stn_id
-        
-        key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
+        key='%2FcZci34ZZmRn%2B%2BFnVmpxlg3gJTLopLKjlrYQ2oQOnbD5l9LzVmgm3b6jINJgSsd%2BJjMap5XMOxgSV8x7OPtjFQ%3D%3D'
+        #key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
         queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
         #노선별 경유 정류소 조회 서비스
 
@@ -72,12 +73,12 @@ class CheckStationView(APIView):
             if stn[i].text == target_stn:
                 return Response({"stn_id":target_stn},status=200)
             
-        return Response({"message":"no matching station"},status=400)
+        return Response({"message":"no matching stations"},status=400)
     
     def get(self,request,*args,**kwargs):
         route_nm = self.kwargs['route_nm']
         busRouteId=self.map_route_nm_id(route_nm).route_id
-        key = 'e3xVi34VqCIVGHy5fE2BPPslceIcfj9xXO3hzCFB%2BMsL2cNTdfW4JBQjkUUrHYRLv%2FIajPlXV4D66RCZ1pzt9Q%3D%3D'
+        key = '%2FcZci34ZZmRn%2B%2BFnVmpxlg3gJTLopLKjlrYQ2oQOnbD5l9LzVmgm3b6jINJgSsd%2BJjMap5XMOxgSV8x7OPtjFQ%3D%3D'
         queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
         #노선별 경유 정류소 조회 서비스
 
@@ -117,7 +118,7 @@ class BusGPSView(APIView):
         except Route.DoesNotExist:
             raise Http404
 
-        key = "JcLNvbnr4xySd0gGijnicJWNGLZh5J69PV8BtQFAgS3OAgP5XuEikX7ekUkO6e%2FPF3HjqlbPsxiPn88IJMyopw%3D%3D"
+        key = "%2FcZci34ZZmRn%2B%2BFnVmpxlg3gJTLopLKjlrYQ2oQOnbD5l9LzVmgm3b6jINJgSsd%2BJjMap5XMOxgSV8x7OPtjFQ%3D%3D"
         queryParams = 'ServiceKey='+key+'&busRouteId='+busRouteId
 
         url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRtid?"+queryParams
