@@ -118,30 +118,15 @@ ASGI_APPLICATION = 'tajo_backend.asgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     #'NAME':'memory'
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
-
+    # Naver cloud DB
     # 'default':{
     #     'ENGINE':'django.db.backends.postgresql',
-    #     'NAME':'tajo',
-    #     'USER':'root',
-    #     'PASSWORD':'321',
-    #     'HOST':'localhost',
+    #     'NAME':'',
+    #     'USER':'',
+    #     'PASSWORD':'',
+    #     'HOST':'',
     #     'PORT':'',
     # }
-    
-    # Naver cloud DB
-    'default':{
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME':'tajo',
-        'USER':'root',
-        'PASSWORD':'321',
-        'HOST':'27.96.134.245',
-        'PORT':'5432',
-    }
 }
 """
 # channel_layers
