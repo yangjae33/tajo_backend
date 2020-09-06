@@ -15,6 +15,8 @@ class CallBuzzer(models.Model):
     route_nm = models.CharField(max_length=50)
     #test
     message = models.CharField(max_length=100)
+
+    arrive = models.CharField(max_length=100)
     """
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
