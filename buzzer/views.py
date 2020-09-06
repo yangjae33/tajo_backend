@@ -41,7 +41,7 @@ class BuzzerView(APIView):
         stNm = soup.select('stNm')
         arsId = soup.select('arsId')
         rtNm = soup.select('rtNm')
-
+        exps1 = soup.select('exps1')
         #첫번째 도착예정 차량 번호판 정보
         plainNo1 = soup.select('plainNo1')
         #첫번째 도착예정 버스 도착정보메세지
@@ -55,7 +55,7 @@ class BuzzerView(APIView):
                 temp = {}
                 temp['stn_id'] = stId[i].text
                 temp['stn_name'] = stNm[i].text
-                #temp['arsId'] = arsId[i].text
+                temp['exps1'] = exps1[i].text
                 temp['route_nm'] = rtNm[i].text
                 temp['bus_id'] = plainNo1[i].text
                 temp['message'] = arrmsg1[i].text
@@ -68,7 +68,7 @@ class BuzzerView(APIView):
         serializer_dict['route_nm']=temp['route_nm']
         serializer_dict['stn_id']=temp['stn_id']
         serializer_dict['message']="ok"
-
+        serializer_dict['arrive']=temp['exps1']
         serializer = BuzzerSerializer(data=serializer_dict)
         if(serializer.is_valid()):
             serializer.save()

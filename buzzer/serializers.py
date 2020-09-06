@@ -17,6 +17,7 @@ class BuzzerSerializer(serializers.ModelSerializer):
             "bus_id",
             "stn_id",
             "route_nm",
-            "message"
+            "message",
+            "arrive"
         ]
         #read_only_fields=('user_id','bus_id',)
