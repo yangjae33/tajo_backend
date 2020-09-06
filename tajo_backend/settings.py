@@ -119,14 +119,14 @@ ASGI_APPLICATION = 'tajo_backend.asgi.application'
 
 DATABASES = {
     # Naver cloud DB
-    # 'default':{
-    #     'ENGINE':'django.db.backends.postgresql',
-    #     'NAME':'',
-    #     'USER':'',
-    #     'PASSWORD':'',
-    #     'HOST':'',
-    #     'PORT':'',
-    # }
+    'default':{
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':'tajo',
+        'USER':'root',
+        'PASSWORD':'321',
+        'HOST':'27.96.134.245',
+        'PORT':'5432',
+    }
 }
 """
 # channel_layers
