@@ -67,6 +67,7 @@ class BuzzerView(APIView):
         serializer_dict['bus_id']=temp['bus_id']
         serializer_dict['route_nm']=temp['route_nm']
         serializer_dict['stn_id']=temp['stn_id']
+        serializer_dict['stn_name']=temp['stn_name']
         serializer_dict['message']="ok"
         serializer_dict['arrive']=temp['exps1']
         serializer = BuzzerSerializer(data=serializer_dict)

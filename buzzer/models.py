@@ -11,6 +11,7 @@ class CallBuzzer(models.Model):
     #user = models.ForeignKey('accounts.user',on_delete=models.CASCADE,null=True,blank=True,default=None)
     #내릴 정류장
     stn_id = models.CharField(max_length=150)
+    stn_name = models.CharField(max_length=50)
     # #노선번호
     route_nm = models.CharField(max_length=50)
     #test

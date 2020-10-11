@@ -16,6 +16,7 @@ class BuzzerSerializer(serializers.ModelSerializer):
             "user_id",
             "bus_id",
             "stn_id",
+            "stn_name",
             "route_nm",
             "message",
             "arrive"
